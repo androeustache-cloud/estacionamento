@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 Sistema de Estacionamento</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-parking"></i> Sistema de Estacionamento</h1>
+            <div class="header-info">
+                <span id="data-hora"></span>
+            </div>
+        </header>
+
+        <nav class="menu">
+            <button class="menu-btn active" data-tab="dashboard">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </button>
+            <button class="menu-btn" data-tab="vagas">
+                <i class="fas fa-vector-square"></i> Vagas
+            </button>
+            <button class="menu-btn" data-tab="entrada-saida">
+                <i class="fas fa-exchange-alt"></i> Entrada/Saída
+            </button>
+            <button class="menu-btn" data-tab="clientes">
+                <i class="fas fa-users"></i> Clientes
+            </button>
+            <button class="menu-btn" data-tab="veiculos">
+                <i class="fas fa-car"></i> Veículos
+            </button>
+            <button class="menu-btn" data-tab="precos">
+                <i class="fas fa-dollar-sign"></i> Preços
+            </button>
+            <button class="menu-btn" data-tab="relatorios">
+                <i class="fas fa-file-alt"></i> Relatórios
+            </button>
+        </nav>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="tab-content active">
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-parking"></i></div>
+                    <div class="card-info">
+                        <h3>Vagas Totais</h3>
+                        <p id="total-vagas">0</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-car"></i></div>
+                    <div class="card-info">
+                        <h3>Vagas Ocupadas</h3>
+                        <p id="vagas-ocupadas">0</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="card-info">
+                        <h3>Vagas Disponíveis</h3>
+                        <p id="vagas-disponiveis">0</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
+                    <div class="card-info">
+                        <h3>Clientes</h3>
+                        <p id="total-clientes">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-ocupacao">
+                <h2><i class="fas fa-chart-bar"></i> Ocupação por Tipo de Vaga</h2>
+                <div id="ocupacao-grafico"></div>
+            </div>
+        </div>
+
+        <!-- Vagas -->
+        <div id="vagas" class="tab-content">
+            <h2><i class="fas fa-vector-square"></i> Mapa de Vagas</h2>
+            <div class="vagas-grid" id="vagas-grid"></div>
+        </div>
+
+        <!-- Entrada/Saída -->
+        <div id="entrada-saida" class="tab-content">
+            <h2><i class="fas fa-exchange-alt"></i> Controle de Entrada/Saída</h2>
+            <div class="entrada-saida-container">
+                <div class="form-section">
+                    <h3>Registrar Entrada</h3>
+                    <form id="form-entrada">
+                        <div class="form-group">
+                            <label>Placa do Veículo</label>
+                            <input type="text" id="entrada-placa" placeholder="ABC-1234" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Vaga</label>
+                            <select id="entrada-vaga" required></select>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-sign-in-alt"></i> Registrar Entrada
+                        </button>
+                    </form>
+                </div>
+                <div class="form-section">
+                    <h3>Registrar Saída</h3>
+                    <form id="form-saida">
+                        <div class="form-group">
+                            <label>Movimentação Ativa</label>
+                            <select id="saida-movimentacao" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Valor Total (R$)</label>
+                            <input type="number" id="saida-valor" step="0.01" placeholder="Deixe em branco para calcular automático">
+                        </div>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-sign-out-alt"></i> Registrar Saída
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes -->
+        <div id="clientes" class="tab-content">
+            <h2><i class="fas fa-users"></i> Cadastro de Clientes</h2>
+            <div class="table-container">
+                <div class="table-header">
+                    <button class="btn btn-primary" id="btn-novo-cliente">
+                        <i class="fas fa-plus"></i> Novo Cliente
+                    </button>
+                    <input type="text" id="busca-cliente" placeholder="Buscar cliente...">
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientes-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Veículos -->
+        <div id="veiculos" class="tab-content">
+            <h2><i class="fas fa-car"></i> Cadastro de Veículos</h2>
+            <div class="table-container">
+                <div class="table-header">
+                    <button class="btn btn-primary" id="btn-novo-veiculo">
+                        <i class="fas fa-plus"></i> Novo Veículo
+                    </button>
+                    <input type="text" id="busca-veiculo" placeholder="Buscar veículo...">
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Modelo</th>
+                            <th>Marca</th>
+                            <th>Cor</th>
+                            <th>Ano</th>
+                            <th>Tamanho</th>
+                            <th>Tipo</th>
+                            <th>Cliente</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="veiculos-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Preços -->
+        <div id="precos" class="tab-content">
+            <h2><i class="fas fa-dollar-sign"></i> Tabela de Preços</h2>
+            <div class="precos-container">
+                <div class="precos-grid" id="precos-grid"></div>
+            </div>
+        </div>
+
+        <!-- Relatórios -->
+        <div id="relatorios" class="tab-content">
+            <h2><i class="fas fa-file-alt"></i> Relatórios</h2>
+            <div class="relatorios-container">
+                <div class="relatorio-section">
+                    <h3>📊 Movimentações Recentes</h3>
+                    <div id="movimentacoes-recentes"></div>
+                </div>
+                <div class="relatorio-section">
+                    <h3>💰 Faturamento Mensal</h3>
+                    <div id="faturamento-mensal"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Cadastro -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title">Cadastro</h2>
+            <form id="modal-form">
+                <div id="modal-fields"></div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
